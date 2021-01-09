@@ -14,7 +14,7 @@ typedef struct Person {
     char pays[30];
 } Person;
 
-/* prend le chemin de la BDD et renvoie une liste des chaine de caracteres */
+/* prendre le chemin de la BDD et renvoie une liste des chaine de caracteres */
 char** lire(char* jsonfile, int* n)
 {
     FILE * db = fopen(jsonfile, "r");
@@ -70,7 +70,7 @@ char* getValue(char* value, char* attr)
     value[k] = '\0';
 }
 
-/* prend une objet json et le transforme en struct Person */
+/* prendre un objet JSON et le transforme en struct Person */
 Person initPersonne(char* person)
 {
     Person p;
@@ -81,7 +81,7 @@ Person initPersonne(char* person)
     char c;
     c = person[cursor];
 
-    /* découper l'objet sur une liste dont les elements sont sous forme ` "key": "value" ` */
+    /* découper l'objet sur une liste de chaine de caracteres dont les elements sont sous forme ` "key": "value" ` */
     for(i = 0; i<5; i++)
     {
         k = 0;
@@ -103,7 +103,7 @@ Person initPersonne(char* person)
     return p;
 }
 
-/* Prend le chemin de la BDD et charger tous données JSON dans une liste de struct Person */
+/* Prendre le chemin de la BDD et charger tous données JSON dans une liste de struct Person */
 Person* charger(char* chemin, int* n) {
 
     int i;
