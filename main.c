@@ -14,6 +14,7 @@ typedef struct Person {
     char pays[30];
 } Person;
 
+/* prend le chemin de la BDD et renvoie une liste des chaine de caracteres */
 char** lire(char* jsonfile, int* n)
 {
     FILE * db = fopen(jsonfile, "r");
@@ -47,6 +48,7 @@ char** lire(char* jsonfile, int* n)
     }
 }
 
+/* prendre une chaine de caractéres sous forme : ` "key": "value" ` et extraire "value" dans la variable *value */
 char* getValue(char* value, char* attr)
 {
     int cursor;
@@ -68,6 +70,7 @@ char* getValue(char* value, char* attr)
     value[k] = '\0';
 }
 
+/* prend une objet json et le transforme en struct Person */
 Person initPersonne(char* person)
 {
     Person p;
@@ -78,6 +81,7 @@ Person initPersonne(char* person)
     char c;
     c = person[cursor];
 
+    /* découper l'objet sur une liste dont les elements sont sous forme ` "key": "value" ` */
     for(i = 0; i<5; i++)
     {
         k = 0;
@@ -99,6 +103,7 @@ Person initPersonne(char* person)
     return p;
 }
 
+/* Prend le chemin de la BDD et charger tous données JSON dans une liste de struct Person */
 Person* charger(char* chemin, int* n) {
 
     int i;
@@ -111,6 +116,7 @@ Person* charger(char* chemin, int* n) {
     return persons;
 }
 
+/* Calculer la distance de Levenstein */
 int levDistance(const char * word1, int len1, const char * word2, int len2)
 {
     int matrix[len1 + 1][len2 + 1];
@@ -162,6 +168,7 @@ int levDistance(const char * word1, int len1, const char * word2, int len2)
     return matrix[len1][len2];
 }
 
+/* cette fonction compare deux elements struct Person */
 int comparing(Person *p, Person *q)
 {
     if(
