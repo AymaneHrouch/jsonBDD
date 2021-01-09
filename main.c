@@ -172,6 +172,7 @@ int levDistance(const char * word1, int len1, const char * word2, int len2)
 int comparing(Person *p, Person *q)
 {
     if(
+       // on soustrait -1 de strlen(p->attr) pcq on veut ignorer le '\n' a la fin de la chaine de caracteres de la requete
         (p->nom[0] == '\n' || !levDistance(p->nom, strlen(p->nom) - 1, q->nom, strlen(q->nom))) &&
         (p->prenom[0] == '\n' || !levDistance(p->prenom, strlen(p->prenom) - 1, q->prenom, strlen(q->prenom))) &&
         (p->email[0] == '\n' || !levDistance(p->email, strlen(p->email) - 1, q->email, strlen(q->email))) &&
