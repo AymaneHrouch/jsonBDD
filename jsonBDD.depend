@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1610198432 source:c:\users\aymanehr\desktop\iid1\algorithmique avancé\c\jsonbdd\main.c
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<conio.h>
-
