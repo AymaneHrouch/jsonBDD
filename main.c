@@ -256,7 +256,7 @@ int main()
     int n, choix;
 //    time_t t;
 //    t = clock();
-    Personne* personnes = charger("./testBDD/1MBDD.json", &n);
+    Personne* personnes = charger("BDD.json", &n);
 //    t = clock() - t;
 //    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
 //    printf("charging took %f seconds to execute \n", time_taken);
