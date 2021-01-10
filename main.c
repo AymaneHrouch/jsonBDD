@@ -49,7 +49,8 @@ char** lire(char* jsonbdd, int* n)
     }
 }
 
-/* prendre une chaine de caractéres sous forme : ` "cle": "valeur" ` et extraire "valeur" dans la variable *valeur */
+/* prendre une chaine de caractéres sous forme : ` "cle": "valeur" `
+    et extraire "valeur" dans la variable *valeur */
 char* extValeur(char* valeur, char* attr)
 {
     int curseur;
@@ -82,7 +83,8 @@ Personne initPersonne(char* personne)
     char c;
     c = personne[curseur];
 
-    /* découper l'objet sur une liste de chaine de caracteres dont les elements sont sous forme ` "key": "value" ` */
+    /* découper l'objet sur une liste de chaine de caracteres
+    dont les elements sont sous forme ` "cle": "valeur" ` */
     for(i = 0; i<5; i++)
     {
         k = 0;
