@@ -7,80 +7,80 @@
 #define true 1
 #define false 0
 
-typedef struct Person {
+typedef struct Personne {
     char nom[30];
     char prenom[30];
     char email[50];
     char ville[30];
     char pays[30];
-} Person;
+} Personne;
 
 /* prendre le chemin de la BDD et renvoie une liste des chaine de caracteres */
-char** lire(char* jsonfile, int* n)
+char** lire(char* jsonbdd, int* n)
 {
-    FILE * db = fopen(jsonfile, "r");
-    char** persons = malloc(1 * sizeof(char*));
+    FILE * bdd = fopen(jsonbdd, "r");
+    char** personnes = malloc(1 * sizeof(char*));
 
     char c;
     *n = 0;
     int k;
 
-    c = fgetc(db); // == '['
+    c = fgetc(bdd); // == '['
     while(1)
     {
         while(c != '{')
         {
-            if(c == EOF) return persons;
-            c = fgetc(db);
+            if(c == EOF) return personnes;
+            c = fgetc(bdd);
         }
-        c = fgetc(db); //  == '{'
+        c = fgetc(bdd); //  == '{'
 
-        persons = realloc(persons, ((*n) + 1) * sizeof(char*));
-        persons[*n] = malloc(MAX_CHAR * sizeof(char));
+        personnes = realloc(personnes, ((*n) + 1) * sizeof(char*));
+        personnes[*n] = malloc(MAX_CHAR * sizeof(char));
         k = 0;
-        while(c != '}') // remplire l'element persons[i]
+        while(c != '}') // remplire l'element personnes[i]
         {
-            if(c != '\t' && c != '\n') persons[*n][k++] = c;
-            c = fgetc(db);
+            if(c != '\t' && c != '\n') personnes[*n][k++] = c;
+            c = fgetc(bdd);
         }
-        persons[*n][k] = '\0';
+        personnes[*n][k] = '\0';
 
         (*n)++;
     }
 }
 
-/* prendre une chaine de caractéres sous forme : ` "key": "value" ` et extraire "value" dans la variable *value */
-char* getValue(char* value, char* attr)
+/* prendre une chaine de caractéres sous forme : ` "cle": "valeur" ` et extraire "valeur" dans la variable *valeur */
+char* extValeur(char* valeur, char* attr)
 {
-    int cursor;
+    int curseur;
     int k;
     char c;
-    cursor = 0;
-    c = attr[cursor];
-    while(c != ':') c = attr[++cursor];
-    while(c != '"') c = attr[++cursor];
-    c = attr[++cursor]; // == '"'
+    curseur = 0;
+    c = attr[curseur];
+    while(c != ':') c = attr[++curseur];
+    while(c != '"') c = attr[++curseur];
+    c = attr[++curseur]; // == '"'
 
     k = 0;
     while(1)
     {
-        c = attr[cursor++];
+        c = attr[curseur++];
         if(c == '"') break;
-        value[k++] = c;
+        valeur[k++] = c;
     }
-    value[k] = '\0';
+    valeur[k] = '\0';
 }
 
 /* prendre un objet JSON et le transforme en struct Person */
-Person initPersonne(char* person)
+Personne initPersonne(char* personne)
 {
-    Person p;
+    Personne p;
     int i;
     int k;
-    int cursor = 0;
+    int curseur = 0;
     char arr[5][70];
     char c;
-    c = person[cursor];
+    c = personne[curseur];
 
     /* découper l'objet sur une liste de chaine de caracteres dont les elements sont sous forme ` "key": "value" ` */
     for(i = 0; i<5; i++)
@@ -89,32 +89,32 @@ Person initPersonne(char* person)
         while(c != ',' && c != '\0')
         {
             arr[i][k++] = c;
-            c = person[++cursor];
+            c = personne[++curseur];
         }
         arr[i][k] = '\0';
-        c = person[++cursor];
+        c = personne[++curseur];
     }
 
-    getValue(p.nom, arr[0]);
-    getValue(p.prenom, arr[1]);
-    getValue(p.email, arr[2]);
-    getValue(p.ville, arr[3]);
-    getValue(p.pays, arr[4]);
+    extValeur(p.nom, arr[0]);
+    extValeur(p.prenom, arr[1]);
+    extValeur(p.email, arr[2]);
+    extValeur(p.ville, arr[3]);
+    extValeur(p.pays, arr[4]);
 
     return p;
 }
 
 /* Prendre le chemin de la BDD et charger tous données JSON dans une liste de struct Person */
-Person* charger(char* chemin, int* n) {
+Personne* charger(char* chemin, int* n) {
 
     int i;
-    char** objects = lire(chemin, n);
-    Person* persons = malloc(*n * sizeof(Person));
+    char** objets = lire(chemin, n);
+    Personne* personnes = malloc(*n * sizeof(Personne));
 
     for(i=0; i<*n; i++)
-        *(persons + i) = initPersonne(objects[i]);
+        *(personnes + i) = initPersonne(objets[i]);
 
-    return persons;
+    return personnes;
 }
 
 /* Calculer la distance de Levenstein */
@@ -174,7 +174,7 @@ int levDistance(const char * word1, const char * word2)
 }
 
 /* cette fonction compare deux elements struct Person */
-int comparing(Person *p, Person *q)
+int comparaison(Personne *p, Personne *q)
 {
     if(
         (p->nom[0] == '\n' || !levDistance(p->nom, q->nom)) &&
@@ -187,30 +187,30 @@ int comparing(Person *p, Person *q)
     else return false;
 }
 
-void searching(Person* persons, int n, int (*cpr)(Person, Person))
+void rechercher(Personne* personnes, int n, int (*cpr)(Personne, Personne))
 {
-    int i, counter = 1;
-    int none = true;
-    Person query;
+    int i, compteur = 1;
+    int aucune = true;
+    Personne requete;
     do{
         printf("remplir au minimum un champ pour chercher.\n");
         printf("nom: ");
-        fgets(query.nom, 100, stdin);
+        fgets(requete.nom, 100, stdin);
         printf("prenom: ");
-        fgets(query.prenom, 100, stdin);
+        fgets(requete.prenom, 100, stdin);
         printf("email: ");
-        fgets(query.email, 100, stdin);
+        fgets(requete.email, 100, stdin);
         printf("ville: ");
-        fgets(query.ville, 100, stdin);
+        fgets(requete.ville, 100, stdin);
         printf("pays: ");
-        fgets(query.pays, 100, stdin);
+        fgets(requete.pays, 100, stdin);
         system("cls");
     } while(
-            (query.nom[0] == '\n') &&
-            (query.prenom[0] == '\n') &&
-            (query.email[0] == '\n') &&
-            (query.ville[0] == '\n') &&
-            (query.pays[0] == '\n')
+            (requete.nom[0] == '\n') &&
+            (requete.prenom[0] == '\n') &&
+            (requete.email[0] == '\n') &&
+            (requete.ville[0] == '\n') &&
+            (requete.pays[0] == '\n')
              );
 
     printf("RESULTATS:\n\n");
@@ -218,33 +218,33 @@ void searching(Person* persons, int n, int (*cpr)(Person, Person))
 //    t = clock();
     for(i=0; i<n; i++)
     {
-        if(cpr(query, persons[i])) {
-            none = false;
-            afficherUn(persons[i], counter++);
+        if(cpr(requete, personnes[i])) {
+            aucune = false;
+            afficherUn(personnes[i], compteur++);
         }
     }
 //    t = clock() - t;
 //    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
 //    printf("searching took %f seconds to execute \n", time_taken);
 
-    if(none) printf("Aucune correspondance trouvee.\n\n\n");
+    if(aucune) printf("Aucune correspondance trouvee.\n\n\n");
     printf("\n\n\nFrapper une touche pour retourner au menu..");
     getch();
     system("cls");
 }
 
-void afficherUn(Person person, int counter)
+void afficherUn(Personne personne, int compteur)
 {
     printf("%d-nom: %s, prenom: %s, email: %s, ville: %s, pays: %s\n",
-            counter, person.nom, person.prenom, person.email,
-            person.ville, person.pays);
+            compteur, personne.nom, personne.prenom, personne.email,
+            personne.ville, personne.pays);
 }
 
-void afficherTous(Person* persons, int n)
+void afficherTous(Personne* personnes, int n)
 {
     int i;
     for(i=0; i<n; i++)
-        afficherUn(persons[i], i+1);
+        afficherUn(personnes[i], i+1);
 
     printf("\n\n\nFrapper une touche pour retourner au menu..");
     getch();
@@ -253,36 +253,36 @@ void afficherTous(Person* persons, int n)
 
 int main()
 {
-    int n, choice;
+    int n, choix;
 //    time_t t;
 //    t = clock();
-    Person* persons = charger("BDD.json", &n);
+    Personne* personnes = charger("./testBDD/1MBDD.json", &n);
 //    t = clock() - t;
 //    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
 //    printf("charging took %f seconds to execute \n", time_taken);
 
-    mainmenu:
+    menu:
     do {
         printf("Bonjour a la base de donnees JSON.\nElle contient les informations de %d personnes.\n\n", n);
         printf("1. Afficher tous les personnes\n");
         printf("2. Rechercher\n\n\n");
         printf("0. Quitter\n");
         printf("votre choix: ");
-        scanf("%d", &choice);
+        scanf("%d", &choix);
         system("cls");
-    } while(choice != 1 &&
-            choice != 2 &&
-            choice != 0);
+    } while(choix != 1 &&
+            choix != 2 &&
+            choix != 0);
     fflush(stdin);
 
-    switch(choice) {
+    switch(choix) {
         case 1:
-            afficherTous(persons, n);
-            goto mainmenu;
+            afficherTous(personnes, n);
+            goto menu;
             break;
         case 2:
-            searching(persons, n, comparing);
-            goto mainmenu;
+            rechercher(personnes, n, comparaison);
+            goto menu;
             break;
         case 0:
             printf("Merci pour utiliser notre logiciel :)\n\n\n");
