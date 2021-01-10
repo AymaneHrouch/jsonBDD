@@ -228,7 +228,6 @@ void searching(Person* persons, int n, int (*cpr)(Person, Person))
 //    printf("searching took %f seconds to execute \n", time_taken);
 
     if(none) printf("Aucune correspondance trouvee.\n\n\n");
-    else printf("\n\n\n%d personnes trouvees", --counter);
     printf("\n\n\nFrapper une touche pour retourner au menu..");
     getch();
     system("cls");
