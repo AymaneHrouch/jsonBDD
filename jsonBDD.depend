@@ -1,8 +1,7 @@
 # depslib dependency file v1.0
-1610247990 source:c:\users\aymanehr\desktop\iid1\algorithmique avancé\c\jsonbdd\main.c
+1610248866 source:c:\users\aymanehr\desktop\iid1\algorithmique avancé\c\jsonbdd\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<conio.h>
-	<time.h>
 
