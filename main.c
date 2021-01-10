@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+//#include <time.h>
 #define MAX_CHAR 600
 #define true 1
 #define false 0
@@ -117,10 +118,12 @@ Person* charger(char* chemin, int* n) {
 }
 
 /* Calculer la distance de Levenstein */
-int levDistance(const char * word1, int len1, const char * word2, int len2)
+int levDistance(const char * word1, const char * word2)
 {
     // on soustrait 1 de len1 pcq on veut ignorer le '\n' a la fin de la chaine de caracteres de la requete
-    len1 = len1 - 1;
+    int len1 = strlen(word1) - 1;
+    int len2 = strlen(word2);
+
     int matrix[len1 + 1][len2 + 1];
     int i;
 
@@ -174,11 +177,11 @@ int levDistance(const char * word1, int len1, const char * word2, int len2)
 int comparing(Person *p, Person *q)
 {
     if(
-        (p->nom[0] == '\n' || !levDistance(p->nom, strlen(p->nom), q->nom, strlen(q->nom))) &&
-        (p->prenom[0] == '\n' || !levDistance(p->prenom, strlen(p->prenom), q->prenom, strlen(q->prenom))) &&
-        (p->email[0] == '\n' || !levDistance(p->email, strlen(p->email), q->email, strlen(q->email))) &&
-        (p->ville[0] == '\n' || !levDistance(p->ville, strlen(p->ville), q->ville, strlen(q->ville))) &&
-        (p->pays[0] == '\n' || !levDistance(p->pays, strlen(p->pays), q->pays, strlen(q->pays)))
+        (p->nom[0] == '\n' || !levDistance(p->nom, q->nom)) &&
+        (p->prenom[0] == '\n' || !levDistance(p->prenom, q->prenom)) &&
+        (p->email[0] == '\n' || !levDistance(p->email, q->email)) &&
+        (p->ville[0] == '\n' || !levDistance(p->ville, q->ville)) &&
+        (p->pays[0] == '\n' || !levDistance(p->pays, q->pays))
        )
         return true;
     else return false;
@@ -211,6 +214,8 @@ void searching(Person* persons, int n, int (*cpr)(Person, Person))
              );
 
     printf("RESULTATS:\n\n");
+//    time_t t;
+//    t = clock();
     for(i=0; i<n; i++)
     {
         if(cpr(query, persons[i])) {
@@ -218,6 +223,10 @@ void searching(Person* persons, int n, int (*cpr)(Person, Person))
             afficherUn(persons[i], counter++);
         }
     }
+//    t = clock() - t;
+//    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+//    printf("searching took %f seconds to execute \n", time_taken);
+
     if(none) printf("Aucune correspondance trouvee.\n\n\n");
     else printf("\n\n\n%d personnes trouvees", --counter);
     printf("\n\n\nFrapper une touche pour retourner au menu..");
@@ -246,7 +255,13 @@ void afficherTous(Person* persons, int n)
 int main()
 {
     int n, choice;
+//    time_t t;
+//    t = clock();
     Person* persons = charger("BDD.json", &n);
+//    t = clock() - t;
+//    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+//    printf("charging took %f seconds to execute \n", time_taken);
+
     mainmenu:
     do {
         printf("Bonjour a la base de donnees JSON.\nElle contient les informations de %d personnes.\n\n", n);
