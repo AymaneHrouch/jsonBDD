@@ -149,7 +149,7 @@ int levDistance(const char * word1, const char * word2)
 
             c2 = word2[j-1];
 
-            if (c1 == c2) {
+            if (c1 == c2 || c1 + 32 == c2 || c1 == c2 + 32) {
                 matrix[i][j] = matrix[i-1][j-1];
             }
             else {
